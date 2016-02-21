@@ -28,13 +28,14 @@ void setup() {
     pinMode(power, OUTPUT);
 
     digitalWrite(power, HIGH);
-    digitalWrite(tilt_led, HIGH);
-    digitalWrite(towing_led, HIGH);
+    digitalWrite(tilt_led, LOW);
+    digitalWrite(towing_led, LOW);
 
 }
 
 
 void loop() {
+
 
     is_tilting = ( digitalRead(tilt) == HIGH );
     press_reset = ( digitalRead(reset_in) == HIGH );
@@ -43,12 +44,15 @@ void loop() {
         Particle.publish("TowStatus","Towing",60,PUBLIC);
         sent_alert = true;
         digitalWrite(towing_led, HIGH);
+        //delay(1000);
     }
 
     if(press_reset){
+        delay(1000);
         sent_alert = false;
         digitalWrite(towing_led, LOW);
     }
 
     digitalWrite(tilt_led, is_tilting);
+    //digitalWrite(towing_led, press_reset);
 }
